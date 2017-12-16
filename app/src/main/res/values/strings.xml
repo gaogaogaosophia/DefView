@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Test For Git</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">姓名</string>
+    <string name="hint_name">请输入您的姓名</string>
+    <string name="def_view">展示自定义view</string>
+</resources>

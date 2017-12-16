@@ -1,0 +1,11 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="parent_margin">50dp</dimen>
+    <dimen name="age_margin">100dp</dimen>
+    <dimen name="nation_margin">150dp</dimen>
+    <dimen name="hobby_margin">200dp</dimen>
+    <dimen name="margin_left">30dp</dimen>
+    <dimen name="edit_txt">140dp</dimen>
+    <dimen name="text_size">20sp</dimen>
+    <dimen name="pic_height">200dp</dimen>
+</resources>
