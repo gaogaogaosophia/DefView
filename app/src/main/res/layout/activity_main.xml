@@ -33,4 +33,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+    <Button
+        android:id="@+id/retrofit2_async"
+        android:layout_marginTop="100dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:background="@android:color/transparent"
+        android:text="@string/retrofit2_view_async"
+        android:textSize="@dimen/text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <Button
+        android:id="@+id/retrofit2_sync"
+        android:layout_marginTop="150dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:background="@android:color/transparent"
+        android:text="@string/retrofit2_view_sync"
+        android:textSize="@dimen/text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>

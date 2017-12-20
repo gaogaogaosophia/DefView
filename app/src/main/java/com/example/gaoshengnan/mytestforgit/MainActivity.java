@@ -4,16 +4,33 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button showDefView;
+    private Button retrofitViewAsync;
+    private Button retrofitViewSync;
+    private Retrofit retrofit;
+    private Call<ResponseBody> call;
+    private RetrofitService retrofitService;
+    private DataService dataService;
 
     //自定义跳转协议
     private static final String DEF_VIEW_URI = "test://gaogao/defView";
+    private static final String RETROFIT2_TEST = "test://gaogao/Retrofit2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +41,116 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void initView(){
         showDefView = findViewById(R.id.show_def_view);
+        retrofitViewAsync = findViewById(R.id.retrofit2_async);
+        retrofitViewSync = findViewById(R.id.retrofit2_sync);
+        retrofitViewAsync.setOnClickListener(this);
+        retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.show_def_view:
+                //自定义页面
                 Uri uri = Uri.parse(DEF_VIEW_URI);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+                break;
+            case R.id.retrofit2_async:
+//                //retrofit实例页面
+//                Uri uriRetrofit = Uri.parse(RETROFIT2_TEST);
+//                intent = new Intent(Intent.ACTION_VIEW, uriRetrofit);
+//                startActivity(intent);
+                AsyncRetrofit();
+                break;
+            case R.id.retrofit2_sync:
+                //主线程不可以做网络请求
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SyncRetrofit();
+                    }
+                }).start();
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 异步请求
+     */
+    public void AsyncRetrofit(){
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://wiki.sankuai.com/")
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+        call = retrofitService.getUser("gaoshengnan");
+        //异步请求
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response) {
+                try {
+                    Log.i("Asynchronous Retrofit", "response = : "+response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("TAG", "onFailure");
+            }
+        });
+
+
+    }
+
+    /**
+     * 同步请求
+     */
+    public void SyncRetrofit(){
+        try {
+            call = retrofitService.getPage(1255723626);
+            Response<ResponseBody> bodyResponse = call.execute();
+            String body = bodyResponse.body().string();//获取返回的字符串
+            Log.i("Synchronous Retrofit", "reponse = : "+body);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getData(){
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://WuXiaolong.me/")//暂定网址
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        dataService = retrofit.create(DataService.class);
+        ApiInfo apiInfo = new ApiInfo();
+        ApiInfo.ApiInfoBean apiInfoBean = apiInfo.new ApiInfoBean();
+        apiInfoBean.setKey("888");
+        apiInfoBean.setName("gaogao");
+        apiInfo.setApiInfo(apiInfoBean);
+        call = dataService.getData(apiInfo);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response) {
+                String body = null;//获取返回体的字符串
+                try {
+                    body = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Log.i("Post Body", "get = :"+body);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.i("Post Body","Failure");
+            }
+        });
     }
 }

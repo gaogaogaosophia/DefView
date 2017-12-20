@@ -24,6 +24,7 @@
             <action android:name="android.intent.action.VIEW" />
 
             <category android:name="android.intent.category.DEFAULT" />
+            <!--自定义的跳转协议-->
             <data
                 android:scheme="test"
                 android:host="gaogao"
@@ -31,6 +32,20 @@
                 />
         </intent-filter>
         </activity>
-    </application>
+        <activity android:name=".Retrofit2Test" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:scheme="test"
+                    android:host="gaogao"
+                    android:path="/Retrofit2"
+                    />
+            </intent-filter>>
+        </activity>
+    </application>
+    <!--添加网络权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

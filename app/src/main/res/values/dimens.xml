@@ -8,4 +8,5 @@
     <dimen name="edit_txt">140dp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="pic_height">200dp</dimen>
+    <dimen name="dividerHeight">1px</dimen>
 </resources>

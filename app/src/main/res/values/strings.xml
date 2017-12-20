@@ -4,4 +4,6 @@
     <string name="name">姓名</string>
     <string name="hint_name">请输入您的姓名</string>
     <string name="def_view">展示自定义view</string>
+    <string name="retrofit2_view_async">Retrofit2异步</string>
+    <string name="retrofit2_view_sync">Retrofit2同步</string>
 </resources>
