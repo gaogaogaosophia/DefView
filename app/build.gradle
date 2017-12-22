@@ -31,5 +31,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     //添加Gson依赖
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    //添加注解依赖
+    compile 'com.android.support:support-annotations:24.2.0'
 
 }

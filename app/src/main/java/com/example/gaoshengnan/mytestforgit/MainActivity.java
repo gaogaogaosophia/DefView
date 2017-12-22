@@ -16,6 +16,7 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.http.Body;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -23,10 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button showDefView;
     private Button retrofitViewAsync;
     private Button retrofitViewSync;
+    private Button annotationRepEnum;
     private Retrofit retrofit;
     private Call<ResponseBody> call;
     private RetrofitService retrofitService;
     private DataService dataService;
+    private AnnotationEnum annotationEnum;
 
     //自定义跳转协议
     private static final String DEF_VIEW_URI = "test://gaogao/defView";
@@ -43,9 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showDefView = findViewById(R.id.show_def_view);
         retrofitViewAsync = findViewById(R.id.retrofit2_async);
         retrofitViewSync = findViewById(R.id.retrofit2_sync);
+        annotationRepEnum = findViewById(R.id.annotaition);
         retrofitViewAsync.setOnClickListener(this);
         retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
+        annotationRepEnum.setOnClickListener(this);
+        annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
     }
 
     @Override
@@ -73,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         SyncRetrofit();
                     }
                 }).start();
+                break;
+            case R.id.annotaition:
+                annotationEnum.whichSeason();
                 break;
             default:
                 break;
@@ -136,6 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         apiInfo.setApiInfo(apiInfoBean);
         call = dataService.getData(apiInfo);
         call.enqueue(new Callback<ResponseBody>() {
+            /**
+             * 接收到http回复时调用
+             * 最好还要判断http给的回复是否是请求成功
+             * http状态码在[200,300)之间时表示请求被成功接收
+             * @param response
+             */
             @Override
             public void onResponse(Response<ResponseBody> response) {
                 String body = null;//获取返回体的字符串
@@ -147,6 +162,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("Post Body", "get = :"+body);
             }
 
+            /**
+             * 网络异常或其他异常时调用
+             * @param t
+             */
             @Override
             public void onFailure(Throwable t) {
                 Log.i("Post Body","Failure");

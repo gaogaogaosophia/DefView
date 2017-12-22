@@ -55,4 +55,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
+    <Button
+        android:id="@+id/annotaition"
+        android:layout_marginTop="200dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:background="@android:color/transparent"
+        android:text="@string/annotation"
+        android:textSize="@dimen/text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>
