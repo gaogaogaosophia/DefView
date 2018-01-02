@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button retrofitViewAsync;
     private Button retrofitViewSync;
     private Button annotationRepEnum;
+    private Button annotationReflect;
     private Retrofit retrofit;
     private Call<ResponseBody> call;
     private RetrofitService retrofitService;
@@ -47,10 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitViewAsync = findViewById(R.id.retrofit2_async);
         retrofitViewSync = findViewById(R.id.retrofit2_sync);
         annotationRepEnum = findViewById(R.id.annotaition);
+        //annotationReflect = findViewById(R.id.a)
         retrofitViewAsync.setOnClickListener(this);
         retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
         annotationRepEnum.setOnClickListener(this);
+
         annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
     }
 
@@ -81,8 +84,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).start();
                 break;
             case R.id.annotaition:
+                annotationEnum.testIntDefFlag();
                 annotationEnum.whichSeason();
                 break;
+            //case R.id.an
             default:
                 break;
         }
@@ -113,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("TAG", "onFailure");
             }
         });
-
-
     }
 
     /**

@@ -1,25 +1,44 @@
+//模块级构建文件，配置所在模块的构建设置；如果这里定义的选项和顶层build.gradle定义的相同
+//那么顶层build.gradle的定义会被覆盖
+
+//指定插件 plugin中提供了android编译、测试、打包等所有task
 apply plugin: 'com.android.application'
 
+//指定Android打包插件的相关属性
 android {
+    //编译时android版本
     compileSdkVersion 26
+    //设置编译时使用的构建工具版本
     buildToolsVersion '26.0.2'
+    //默认属性，如果在Anroidmanifest.xml文件里面定义了与这里相同的属性，那么以这里为主
+    //可用属性：buildTypes和productFlavors
     defaultConfig {
         applicationId "com.example.gaoshengnan.mytestforgit"
         minSdkVersion 16
         targetSdkVersion 26
+        //一个整数，用作内部版本号。用于确定一个版本是否比另一个版本更新，数字越大表示版本越新
+        //发布应用的第一个版本时需要将 versionCode 设为 1，之后为每个发布版本单调增大此值，无论发布的是主版本还是次版本
         versionCode 1
+        //versionName - 一个字符串，用作显示给用户的版本号
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    //编译类型 可打出不同类型的包 默认(debug/release) 也可以增加其他类型的包
     buildTypes {
         release {
+            //是否进行混淆
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //productFlavors
+    //配置不同风格的app(如免费和付费)，在buildTypes的基础上可以让每个类型的APP拥有不同风格，所以最终可打出的apk的
+    //数量是buildTypes乘以productFlavors。构建变量的名称是productFlavors+buildTypes
 }
 
+//gradle的依赖配置，定义了当前项目需要依赖的其他
 dependencies {
+    //依赖libs目录下的全部jar文件
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -33,5 +52,4 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     //添加注解依赖
     compile 'com.android.support:support-annotations:24.2.0'
-
 }

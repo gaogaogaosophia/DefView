@@ -23,10 +23,16 @@ public class AnnotationEnum {
         System.out.println("season:" + season);
     }
 
-    //声明IntDef
-    @IntDef({SPRING, SUMMER, WINTER, FALL})
+    /**
+     * @IntDef "包住" 常量；
+     * @Retention 保留定义策略:
+     *   SOURCE —— 只在源代码级别保留,编译时就会被忽略
+     *   CLASS —— 编译时被保留,在class文件中存在,但JVM将会忽略
+     *   RUNTIME —— 被JVM保留,所以他们能在运行时被JVM或其他使用反射机制的代码所读取和使用
+     * @interface 声明构造器
+     */
+    @IntDef(flag = true,value = {SPRING, SUMMER, WINTER, FALL})
     @Retention(RetentionPolicy.SOURCE)
-    //声明新的枚举注解类型
     public @interface Season{}
 
     @Season public int curSeason = WINTER;
@@ -37,6 +43,14 @@ public class AnnotationEnum {
 
     public void setCurSeason(@Season int season) {
         this.curSeason = season;
+    }
+
+    /**
+     * 测试@IntDef flag = true的使用
+     */
+    public void testIntDefFlag() {
+        setCurSeason(AnnotationEnum.SPRING & AnnotationEnum.FALL);
+        System.out.println("I feel better");
     }
 
     public void whichSeason(){
@@ -56,4 +70,13 @@ public class AnnotationEnum {
                 break;
         }
     }
+
+    /**
+     *测试用反射获得注解
+     */
+    public void testReflect(){
+        Class<AnnotationEnum> clasz =AnnotationEnum.class;
+
+    }
+
 }
