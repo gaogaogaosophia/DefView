@@ -8,4 +8,6 @@
     <string name="retrofit2_view_sync">Retrofit2同步</string>
     <string name="annotation">AnnotationReplaceEnum</string>
     <string name="annotationReflect">注解反射测试</string>
+    <string name="webview_test">WebView测试</string>
+    <string name="js_test">JS测试</string>
 </resources>

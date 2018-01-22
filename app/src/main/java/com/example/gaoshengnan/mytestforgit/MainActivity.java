@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button retrofitViewSync;
     private Button annotationRepEnum;
     private Button annotationReflect;
+    private Button webViewTest;
+    private Button jsTest;
     private Retrofit retrofit;
     private Call<ResponseBody> call;
     private RetrofitService retrofitService;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //自定义跳转协议
     private static final String DEF_VIEW_URI = "test://gaogao/defView";
     private static final String RETROFIT2_TEST = "test://gaogao/Retrofit2";
+    private static final String WEBVIEW_TEST = "test://gaogao/WebViewTest";
+    private static final String JS_TEST = "test://gaogao/JSTest";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +53,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitViewSync = findViewById(R.id.retrofit2_sync);
         annotationRepEnum = findViewById(R.id.annotaition);
         //annotationReflect = findViewById(R.id.a)
+        webViewTest = findViewById(R.id.webview_test);
+        jsTest = findViewById(R.id.js_test);
         retrofitViewAsync.setOnClickListener(this);
         retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
         annotationRepEnum.setOnClickListener(this);
+        webViewTest.setOnClickListener(this);
+        jsTest.setOnClickListener(this);
 
         annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
     }
 
     @Override
     public void onClick(View v) {
+        Uri uri;
         Intent intent = null;
         switch (v.getId()) {
             case R.id.show_def_view:
                 //自定义页面
-                Uri uri = Uri.parse(DEF_VIEW_URI);
+                uri = Uri.parse(DEF_VIEW_URI);
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 break;
@@ -87,7 +96,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 annotationEnum.testIntDefFlag();
                 //annotationEnum.whichSeason();
                 break;
-            //case R.id.an
+            case R.id.webview_test:
+                uri = Uri.parse(WEBVIEW_TEST);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                break;
+            case R.id.js_test:
+                uri = Uri.parse(JS_TEST);
+                intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
             default:
                 break;
         }

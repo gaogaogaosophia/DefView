@@ -43,7 +43,33 @@
                     android:host="gaogao"
                     android:path="/Retrofit2"
                     />
-            </intent-filter>>
+            </intent-filter>
+        </activity>
+        <activity android:name=".webview.WebViewTest" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:scheme="test"
+                    android:host="gaogao"
+                    android:path="/WebViewTest"
+                    />
+            </intent-filter>
+        </activity>
+        <activity android:name=".webview.JSTest" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:scheme="test"
+                    android:host="gaogao"
+                    android:path="/JSTest"
+                    />
+            </intent-filter>
         </activity>
     </application>
     <!--添加网络权限-->

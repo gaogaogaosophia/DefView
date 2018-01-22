@@ -77,5 +77,4 @@ public class AnnotationEnum {
         Class<AnnotationEnum> clasz =AnnotationEnum.class;
 
     }
-
 }
