@@ -20,11 +20,14 @@ public class TestAnnotation {
     private int id;
 
     /**
-     * 必须得为public，若为private则无效 为啥
+     * 获得方法时：
+     * 1.若使用getMthod()，前提是方法必须为public的；
+     * 2.若使用getDeclaredMethod()，则可以获得非public的方法；
+     * 同试用于getFiled()
      * @param id
      */
     @MyAnnotationForTest.MyMethodAnnotation(desc = "the method",uri = "")
-    public void setId(int id) {
+    private void setId(int id) {
         this.id = id;
     }
 
@@ -39,7 +42,7 @@ public class TestAnnotation {
         MyAnnotationForTest.MyConstructorAnnotation myConstructorAnnotation = constructor.getAnnotation(MyAnnotationForTest.MyConstructorAnnotation.class);
         System.out.println(myConstructorAnnotation.desc() + " " + myClassAnnotation.uri());
         //获取方法注解
-        Method method = clasz.getMethod("setId", new Class[]{int.class});
+        Method method = clasz.getDeclaredMethod("setId", new Class[]{int.class});
         MyAnnotationForTest.MyMethodAnnotation myMethodAnnotation = method.getAnnotation(MyAnnotationForTest.MyMethodAnnotation.class);
         System.out.println(myMethodAnnotation.desc() + " " + myMethodAnnotation.uri());
         //获取字段注解
