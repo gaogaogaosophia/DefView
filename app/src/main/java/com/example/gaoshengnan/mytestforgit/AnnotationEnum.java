@@ -50,12 +50,11 @@ public class AnnotationEnum {
      */
     public void testIntDefFlag() {
         setCurSeason(AnnotationEnum.SPRING & AnnotationEnum.FALL);
-        System.out.println("I feel better");
+        whichSeason(this.curSeason);
     }
 
-    public void whichSeason(){
-        @Season int season = getCurSeason();
-        switch (season) {
+    public void whichSeason(@Season int curSeason){
+        switch (curSeason) {
             case SPRING:
                 Log.i("AnnotationEnum", "The Season is : SPRING");
                 break;
