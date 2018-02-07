@@ -1,6 +1,8 @@
 package com.example.gaoshengnan.mytestforgit;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +11,20 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
 
+import com.example.gaoshengnan.mytestforgit.rxjava.RxJavaTest;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
@@ -28,17 +42,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button annotationReflect;
     private Button webViewTest;
     private Button jsTest;
+    private Button raJava;
     private Retrofit retrofit;
     private Call<ResponseBody> call;
     private RetrofitService retrofitService;
     private DataService dataService;
     private AnnotationEnum annotationEnum;
 
+
+    private RxJavaTest rxJavaTest;
+    private WeakReference<RxJavaTest> weakReference;
+
     //自定义跳转协议
     private static final String DEF_VIEW_URI = "test://gaogao/defView";
     private static final String RETROFIT2_TEST = "test://gaogao/Retrofit2";
     private static final String WEBVIEW_TEST = "test://gaogao/WebViewTest";
     private static final String JS_TEST = "test://gaogao/JSTest";
+    private static final String RX_JAVA = "test://gaogao/RxJava";
+
+    private static final String RXJAVA_TAG = "Rx_Java";
+    private static final String PIC_URI = "http://image.baidu.com/search/detail?z=0&word=%E7%BD%97%E5%AE%BE%E7%9A%84%E6%91%84%E5%BD%B1%E6%9D%82%E8%8D%89%E5%9C%B0&hs=0&pn=6&spn=0&di=0&pi=" +
+            "50071627471&tn=baiduimagedetail&is=1%2C97321&ie=utf-8&oe=utf-8&cs=1911630719%2C1070589393&os=&simid=&adpicid=0&lpn=0&fm=&sme=&cg=&bdtype=-1&oriquery=&objurl=http%3A%2F%2Fh.hiphotos.baidu." +
+            "com%2Fimage%2Fpic%2Fitem%2Fc8ea15ce36d3d5397966ba5b3187e950342ab0cb.jpg&fromurl=&gsm=&catename=pcindexhot";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //annotationReflect = findViewById(R.id.a)
         webViewTest = findViewById(R.id.webview_test);
         jsTest = findViewById(R.id.js_test);
+        raJava = findViewById(R.id.rxjava_test);
         retrofitViewAsync.setOnClickListener(this);
         retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
         annotationRepEnum.setOnClickListener(this);
         webViewTest.setOnClickListener(this);
         jsTest.setOnClickListener(this);
+        raJava.setOnClickListener(this);
 
         annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
     }
@@ -105,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 uri = Uri.parse(JS_TEST);
                 intent = new Intent(Intent.ACTION_VIEW,uri);
                 startActivity(intent);
+            case R.id.rxjava_test:
+                uri = Uri.parse(RX_JAVA);
+                intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+                downBitMapWithRxjava(PIC_URI);
+                break;
             default:
                 break;
         }
@@ -192,4 +225,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+    public void downBitMapWithRxjava(final String uri){
+        //图片地址判空
+        if (null != uri) {
+            io.reactivex.Observable<String> observable = io.reactivex.Observable.create(new ObservableOnSubscribe<String>() {
+                @Override
+                public void subscribe(ObservableEmitter<String> e) throws Exception {
+                        e.onNext(uri);
+                }
+            });
+            io.reactivex.Observer<String> observer = new io.reactivex.Observer<String>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+                    Log.d(RXJAVA_TAG, "Observable and Observer have connected!");
+                }
+
+                @Override
+                public void onNext(String value) {
+                    Log.d(RXJAVA_TAG, "onNext");
+                    Bitmap bitmap = BitmapFactory.decodeFile(value);
+                    weakReference = new WeakReference<>(rxJavaTest);
+                    weakReference.get().setImage(bitmap);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(RXJAVA_TAG,"ERROR!");
+                }
+
+                @Override
+                public void onComplete() {
+                    Log.d(RXJAVA_TAG, "onCompleted!");
+                }
+            };
+            observable
+                    .subscribeOn(Schedulers.io())//指定subscribe发生在io线程
+                    .observeOn(AndroidSchedulers.mainThread())//指定subscriber的回调发生在主线程
+                    .subscribe(observer);
+        } else {
+            Log.e("RxJava", "Invalid Uri!");
+        }
+    }
+
 }

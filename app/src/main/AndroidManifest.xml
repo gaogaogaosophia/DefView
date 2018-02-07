@@ -71,6 +71,19 @@
                     />
             </intent-filter>
         </activity>
+        <activity android:name=".rxjava.RxJavaTest" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                        android:scheme="test"
+                        android:host="gaogao"
+                        android:path="/RxJava"
+                />
+            </intent-filter>
+        </activity>
     </application>
     <!--添加网络权限-->
     <uses-permission android:name="android.permission.INTERNET" />
