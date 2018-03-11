@@ -39,6 +39,9 @@ import retrofit2.http.Body;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    /**
+     * 声明控件
+     */
     private Button showDefView;
     private Button retrofitViewAsync;
     private Button retrofitViewSync;
@@ -54,14 +57,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DataService dataService;
     private AnnotationEnum annotationEnum;
 
-
+    /**
+     * 弱引用
+     */
     private RxJavaTest rxJavaTest;
-    private PicassoTest picassoTest;
     private WeakReference<RxJavaTest> weakReference;
 
-    private WeakReference<PicassoTest> weakReferencePicasso;
-
-    //自定义跳转协议
+    /**
+     * 自定义跳转协议
+     */
     private static final String DEF_VIEW_URI = "test://gaogao/defView";
     private static final String RETROFIT2_TEST = "test://gaogao/Retrofit2";
     private static final String WEBVIEW_TEST = "test://gaogao/WebViewTest";
@@ -69,9 +73,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String RX_JAVA = "test://gaogao/RxJava";
     private static final String RX_PICASSO = "test://gaogao/Picasso";
 
+    /**
+     * Log打印的Tag
+     */
     private static final String RXJAVA_TAG = "Rx_Java";
-    private static final String PICASSO_TAG = "PICASSO";
+
+    /**
+     * 图片uri
+     */
     private static final String PIC_URI = "http://d.hiphotos.baidu.com/image/pic/item/8601a18b87d6277fcdb9b01d24381f30e924fc68.jpg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
+    /**
+     * 初始化控件和布局
+     */
     public void initView(){
         showDefView = findViewById(R.id.show_def_view);
         retrofitViewAsync = findViewById(R.id.retrofit2_async);
@@ -99,9 +113,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         picasso.setOnClickListener(this);
 
         annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
-        picassoTest = new PicassoTest();
     }
 
+    /**
+     * 控件点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         Uri uri;
@@ -114,10 +131,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.retrofit2_async:
-//                //retrofit实例页面
-//                Uri uriRetrofit = Uri.parse(RETROFIT2_TEST);
-//                intent = new Intent(Intent.ACTION_VIEW, uriRetrofit);
-//                startActivity(intent);
                 AsyncRetrofit();
                 break;
             case R.id.retrofit2_sync:
@@ -131,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.annotaition:
                 annotationEnum.testIntDefFlag();
-                //annotationEnum.whichSeason();
                 break;
             case R.id.webview_test:
                 uri = Uri.parse(WEBVIEW_TEST);
@@ -160,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * 异步请求
+     * Retrofit异步请求
      */
     public void AsyncRetrofit(){
         retrofit = new Retrofit.Builder()
@@ -187,13 +199,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * 同步请求
+     * Retrofit同步请求
      */
     public void SyncRetrofit(){
         try {
             call = retrofitService.getPage(1255723626);
             Response<ResponseBody> bodyResponse = call.execute();
-            String body = bodyResponse.body().string();//获取返回的字符串
+            /**
+             * 获取返回的字符串
+             */
+            String body = bodyResponse.body().string();
             Log.i("Synchronous Retrofit", "reponse = : "+body);
 
         } catch (IOException e) {
@@ -203,7 +218,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void getData(){
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://WuXiaolong.me/")//暂定网址
+                /**
+                 * 暂定网址
+                 */
+                .baseUrl("http://WuXiaolong.me/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         dataService = retrofit.create(DataService.class);
@@ -222,7 +240,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              */
             @Override
             public void onResponse(Response<ResponseBody> response) {
-                String body = null;//获取返回体的字符串
+                /**
+                 * 获取返回体的字符串
+                 */
+                String body = null;
                 try {
                     body = response.body().string();
                 } catch (IOException e) {
@@ -276,8 +297,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             };
             observable
-                    .subscribeOn(Schedulers.io())//指定subscribe发生在io线程
-                    .observeOn(AndroidSchedulers.mainThread())//指定subscriber的回调发生在主线程
+                    /**
+                     * 指定subscribe发生的线程：io线程
+                     */
+                    .subscribeOn(Schedulers.io())
+                    /**
+                     * 指定subscriber的回调发生的线程：主线程
+                     */
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(observer);
         } else {
             Log.e("RxJava", "Invalid Uri!");

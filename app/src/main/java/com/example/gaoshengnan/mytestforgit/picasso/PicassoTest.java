@@ -96,6 +96,10 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Button点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -113,11 +117,18 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * 自定义Picasso转换器
+     * 效果：高斯模糊
+     */
     public static class MyTransformation implements Transformation {
 
+        /**
+         * 渲染脚本
+         */
         RenderScript renderScript;
 
-        public MyTransformation(Context context) {
+        MyTransformation(Context context) {
             super();
             renderScript = RenderScript.create(context);
         }
@@ -127,21 +138,20 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
         public Bitmap transform(Bitmap bitmap) {
             Bitmap blurredBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-            // Allocate memory for Renderscript to work with
+            //为脚本分配内存
             Allocation input = Allocation.createFromBitmap(renderScript, blurredBitmap, Allocation.MipmapControl.MIPMAP_FULL, Allocation.USAGE_SHARED);
             Allocation output = Allocation.createTyped(renderScript, input.getType());
 
-            // Load up an instance of the specific script that we want to use.
+            //加载脚本（固有高斯模糊滤波器）实例
             ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
             script.setInput(input);
 
-            // Set the blur radius
+            // 设置模糊度
             script.setRadius(25);
 
-            // Start the ScriptIntrinisicBlur
+            //开始使用滤波器
             script.forEach(output);
 
-            // Copy the output to the blurred bitmap
             output.copyTo(blurredBitmap);
 
             bitmap.recycle();
