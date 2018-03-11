@@ -110,5 +110,16 @@
         android:textSize="@dimen/text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    />
+        />
+    <Button
+        android:id="@+id/picasso_test"
+        android:layout_marginTop="450dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:background="@android:color/transparent"
+        android:text="@string/picasso_test"
+        android:textSize="@dimen/text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 </RelativeLayout>

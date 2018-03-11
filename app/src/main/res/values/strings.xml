@@ -11,4 +11,8 @@
     <string name="webview_test">WebView测试</string>
     <string name="js_test">JS测试</string>
     <string name="rxjava_test">RxJava测试</string>
+    <string name="picasso_test">Picasso测试</string>
+    <string name="picasso_loadUri">加载uri路径图片</string>
+    <string name="picasso_loadnative">加载本地图片</string>
+    <string name="picasso_loadTransformation">加载本地转换器图片</string>
 </resources>
