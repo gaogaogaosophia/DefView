@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button jsTest;
     private Button raJava;
     private Button picasso;
+    private Button json;
     private Retrofit retrofit;
     private Call<ResponseBody> call;
     private RetrofitService retrofitService;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String JS_TEST = "test://gaogao/JSTest";
     private static final String RX_JAVA = "test://gaogao/RxJava";
     private static final String RX_PICASSO = "test://gaogao/Picasso";
+    private static final String JSON_TEST = "test://gaogao/Json";
 
     /**
      * Log打印的Tag
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jsTest = findViewById(R.id.js_test);
         raJava = findViewById(R.id.rxjava_test);
         picasso = findViewById(R.id.picasso_test);
+        json = findViewById(R.id.json_test);
+
         retrofitViewAsync.setOnClickListener(this);
         retrofitViewSync.setOnClickListener(this);
         showDefView.setOnClickListener(this);
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jsTest.setOnClickListener(this);
         raJava.setOnClickListener(this);
         picasso.setOnClickListener(this);
+        json.setOnClickListener(this);
 
         annotationEnum = new AnnotationEnum(AnnotationEnum.WINTER);
     }
@@ -164,6 +169,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.picasso_test:
                 uri = Uri.parse(RX_PICASSO);
                 intent = new Intent(Intent.ACTION_VIEW,uri);
+                startActivity(intent);
+                break;
+            case R.id.json_test:
+                uri = Uri.parse(JSON_TEST);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 break;
             default:

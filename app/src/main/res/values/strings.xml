@@ -15,4 +15,8 @@
     <string name="picasso_loadUri">加载uri路径图片</string>
     <string name="picasso_loadnative">加载本地图片</string>
     <string name="picasso_loadTransformation">加载本地转换器图片</string>
+    <string name="json_test">测试JSON</string>
+    <string name="gson_test">GSON测试</string>
+    <string name="fastjson_test">FASTJSON测试</string>
+    <string name="jackson_test">JACKSON测试</string>
 </resources>

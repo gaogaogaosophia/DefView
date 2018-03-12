@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.gaoshengnan.mytestforgit.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
@@ -66,7 +67,8 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
     private void downloadPicWithUri() {
         if (imageView != null) {
             Log.i(PICASSO_TAG, "Downloading Pic!");
-            Picasso.with(this).load(PIC_URI).into(imageView);
+//            Picasso.with(this).load(PIC_URI).into(imageView);
+            Glide.with(this).load(PIC_URI).asBitmap().into(imageView);
         } else {
             Log.e(PICASSO_TAG, "ImageView Is Null");
         }
