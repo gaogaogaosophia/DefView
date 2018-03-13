@@ -2,6 +2,8 @@ package com.example.gaoshengnan.mytestforgit.picasso;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.Allocation;
@@ -19,7 +21,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.gaoshengnan.mytestforgit.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Description:
@@ -36,6 +41,8 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
     private Button picassoNative;
     private Button picassoUri;
     private Button picassoTranformation;
+
+    private PicassoTest picassoTest;
 
     private static final String PICASSO_TAG = "PICASSO";
     private static final String PIC_URI = "http://d.hiphotos.baidu.com/image/pic/item/8601a18b87d6277fcdb9b01d24381f30e924fc68.jpg";
@@ -67,8 +74,7 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
     private void downloadPicWithUri() {
         if (imageView != null) {
             Log.i(PICASSO_TAG, "Downloading Pic!");
-//            Picasso.with(this).load(PIC_URI).into(imageView);
-            Glide.with(this).load(PIC_URI).asBitmap().into(imageView);
+            Picasso.with(this).load(PIC_URI).into(imageView);
         } else {
             Log.e(PICASSO_TAG, "ImageView Is Null");
         }
@@ -87,12 +93,37 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * 用Picasso下载展示Native变换后的图片
+     * 用Picasso下载展示本地变换后的图片
      */
     private void downloadPicWithTransformation() {
         if (imageView != null) {
-            Log.i(PICASSO_TAG, "Downloading Pic!");
-            Picasso.with(this).load(R.drawable.beautifulscenery).transform(new MyTransformation(this)).into(imageView);
+            /**
+             * Target是Picasso中下载图片的回调接口
+             */
+            Target target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    Log.i(PICASSO_TAG,"Picasso加载成功");
+                    imageView.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+                    Log.e(PICASSO_TAG,"Picasso加载失败");
+                    if (null != errorDrawable) {
+                        imageView.setImageDrawable(errorDrawable);
+                    } else {
+                        imageView.setImageResource(R.drawable.errordefault);
+                    }
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    Log.i(PICASSO_TAG,"Picasso正在加载");
+                }
+            };
+            imageView.setTag(target);
+            Picasso.with(this).load(R.drawable.beautifulscenery).transform(new MyTransformation(this)).into(target);
         } else {
             Log.e(PICASSO_TAG, "ImageView Is Null");
         }
