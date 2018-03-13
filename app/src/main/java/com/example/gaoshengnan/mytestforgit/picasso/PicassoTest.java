@@ -84,9 +84,22 @@ public class PicassoTest extends AppCompatActivity implements View.OnClickListen
      * 用Picasso下载展示Native图片
      */
     private void downloadPicWithNative() {
-        if (imageView != null) {
+        if (null != imageView) {
             Log.i(PICASSO_TAG, "Downloading Pic!");
-            Picasso.with(this).load(R.drawable.beautifulscenery).into(imageView);
+            Picasso.with(this)
+                    .load(R.drawable.beautifulscenery)
+                    //占位图，图片正在加载时显示
+                    .placeholder(R.drawable.placeholder)
+                    //设置此请求的优先级
+                    .priority(Picasso.Priority.HIGH)
+                    //重新设置图片尺寸，类似的fit()方法作用是测量view大小且把图片裁剪到view大小
+                    .resize(400,400)
+                    //使图片充满imageview边界
+                    .centerCrop()
+                    .rotate(30)
+                    //图片加载失败时显示的图片
+                    .error(R.drawable.errordefault)
+                    .into(imageView);
         } else {
             Log.e(PICASSO_TAG, "ImageView Is Null");
         }
